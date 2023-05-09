@@ -6,10 +6,10 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(evt) {
   evt.preventDefault();
-
-  const delay = evt.currentTarget.delay.value;
-  const step = evt.currentTarget.step.value;
-  const amountOfPromise = evt.currentTarget.amount.value;
+  
+  let delay = evt.currentTarget.delay.valueAsNumber;
+  const step = evt.currentTarget.step.valueAsNumber;
+  const amountOfPromise = evt.currentTarget.amount.valueAsNumber;
 
   if (delay < 0 || step < 0 || amountOfPromise <= 0) {
     Notiflix.Notify.warning('Input values should be positive');
