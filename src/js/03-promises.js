@@ -7,15 +7,19 @@ form.addEventListener('submit', onFormSubmit);
 function onFormSubmit(evt) {
   evt.preventDefault();
 
-  const { delay: mainDelay, step: delayStep, amount: amountOfPromise } = evt.currentTarget;
+  const delay = evt.currentTarget.delay.value;
+  const step = evt.currentTarget.step.value;
+  const amountOfPromise = evt.currentTarget.amount.value;
 
-  if (mainDelay < 0 || delayStep < 0 || amountOfPromise <= 0) {
+  if (delay < 0 || step < 0 || amountOfPromise <= 0) {
     Notiflix.Notify.warning('Input values should be positive');
     return;
   }
 
+  let currentDelay = delay;
+
   for (let position = 1; position <= amountOfPromise; position += 1) {
-    createPromise(position, mainDelay)
+    createPromise(position, currentDelay)
       .then(({ position, delay }) => {
         Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
@@ -23,12 +27,12 @@ function onFormSubmit(evt) {
         Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       });
 
-    mainDelay += delayStep;
+    currentDelay += step;
   };
 }
 
 function createPromise(position, delay) {
-  const promise = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
 
     setTimeout(() => {
